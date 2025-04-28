@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎲 Dice Reward Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class=" p-4 bg-gradient-to-br from-purple-600 to-blue-500 min-h-screen flex flex-col items-center justify-center text-white">
+
+  <h1 class="text-4xl font-bold mb-4">🎲Dice Reward Game</h1>
+  <p class="mb-6 text-lg">Select a number (2–12) and roll the dice!</p>
+
+  
+   <div id="numberGrid" class="grid grid-cols-6 gap-4 mb-6 p-2">
+  <button onclick="selectNumber(2)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">2</button>
+  <button onclick="selectNumber(3)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">3</button>
+  <button onclick="selectNumber(4)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">4</button>
+  <button onclick="selectNumber(5)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">5</button>
+  <button onclick="selectNumber(6)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">6</button>
+  <button onclick="selectNumber(7)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">7</button>
+  <button onclick="selectNumber(8)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">8</button>
+  <button onclick="selectNumber(9)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">9</button>
+  <button onclick="selectNumber(10)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">10</button>
+  <button onclick="selectNumber(11)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">11</button>
+  <button onclick="selectNumber(12)" class="number-btn px-4 py-2 bg-white text-black rounded-lg font-semibold hover:bg-yellow-300 transition">12</button>
+
+
+  </div>
+
+  <div class="flex items-center gap-10 text-7xl mb-6 transition-all duration-300">
+    <div id="dice1">🎲</div>
+    <div id="dice2">🎲</div>
+  </div>
+
+  <button onclick="rollDice()" id="rollBtn" class="px-6 py-3 bg-yellow-400 text-black font-bold rounded-xl hover:bg-yellow-300 transition">
+    Roll Dice 🎲
+  </button>
+
+  <div id="result" class="mt-6 text-xl font-semibold"></div>
+
+  <script>
+    let selectedNumber = null;
+
+    function selectNumber(num) {
+      selectedNumber = num;
+      document.querySelectorAll('.number-btn').forEach(btn => btn.classList.remove('bg-yellow-400'));
+      event.target.classList.add('bg-yellow-400');
+      document.getElementById('result').textContent = '';
+    }
+
+    function getDieFace(num) {
+      const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+      return faces[num - 1];
+    }
+
+    function rollDice() {
+      if (!selectedNumber) {
+        document.getElementById('result').textContent = '❗ Please select a number first.';
+        return;
+      }
+
+      // Roll animation
+      document.getElementById('dice1').textContent = '🎲';
+      document.getElementById('dice2').textContent = '🎲';
+      document.getElementById('result').textContent = 'Rolling... 🎲';
+
+      setTimeout(() => {
+        const roll1 = Math.floor(Math.random() * 6) + 1;
+        const roll2 = Math.floor(Math.random() * 6) + 1;
+        const total = roll1 + roll2;
+
+        document.getElementById('dice1').textContent = getDieFace(roll1);
+        document.getElementById('dice2').textContent = getDieFace(roll2);
+
+        if (total === selectedNumber) {
+          document.getElementById('result').textContent = `🎉 You won! Total = ${total}`;
+        } else {
+          document.getElementById('result').textContent = `😢 You lost! Total = ${total}`;
+        }
+      }, 800);
+    }
+  </script>
+
+</body>
+</html>
