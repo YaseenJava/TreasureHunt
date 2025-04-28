@@ -12,7 +12,7 @@
   <div class="text-lg text-yellow-900 mb-2">Find all coins in a row to increase your streak score!</div>
   
   <div class="flex space-x-4 items-center mb-6">
-    <div id="score" class="text-xl font-semibold text-yellow-900">Score: 0</div>
+    <div id="score" class="text-xl font-semibold text-yellow-900">Highest Score: 0</div>
     <div id="streak" class="text-xl font-semibold text-yellow-900">Streak: 0</div>
   </div>
 
@@ -24,9 +24,11 @@
     <button onclick="startGame()" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded shadow-md">
       Restart Game 🔄
     </button>
+
     <!--<button onclick="revealCoins()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">
       Show All Coins 👀
-    </button>-->
+    </button>
+   -->
   </div>
 
   <script>
@@ -44,7 +46,7 @@
       grid.innerHTML = '';
       score = 0;
       streak = 0;
-      scoreDisplay.textContent = 'Score: 0';
+      //scoreDisplay.textContent = 'Highest Score: ${score}';
       streakDisplay.textContent = 'Streak: 0';
       coins = [];
 
@@ -74,7 +76,8 @@
     tile.innerHTML = '<img src="https://png.pngtree.com/png-clipart/20221026/original/pngtree-gold-coin-png-image_8724558.png" alt="coin" class="w-8 h-8">';
     tile.classList.add('bg-yellow-400');
     streak++;
-    score += streak;
+    score = Math.max(streak,score);
+    
     updateScore();
 
     // Reset grid but keep score and streak
@@ -109,7 +112,7 @@ function refreshGrid() {
 }
 
     function updateScore() {
-     document.getElementById('score').textContent = `Score: ${score}`;
+     document.getElementById('score').textContent = `Highest Score: ${score}`;
       document.getElementById('streak').textContent = `Streak: ${streak}`;
     }
 
@@ -127,4 +130,4 @@ function refreshGrid() {
     window.onload = startGame;
   </script>
 </body>
-</html>
+  
