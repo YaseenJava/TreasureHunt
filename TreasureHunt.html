@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coin Mining Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-yellow-100 to-yellow-300 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <h1 class="text-4xl font-bold text-yellow-800 mb-4">Coin Mining Streak Game</h1>
+  <div class="text-lg text-yellow-900 mb-2">Find all coins in a row to increase your streak score!</div>
+  
+  <div class="flex space-x-4 items-center mb-6">
+    <div id="score" class="text-xl font-semibold text-yellow-900">Score: 0</div>
+    <div id="streak" class="text-xl font-semibold text-yellow-900">Streak: 0</div>
+  </div>
+
+  <div id="grid" class="grid  grid-cols-4  grid-rows-lg:grid-cols-5 gap-3">
+    <!-- Tiles will be created dynamically -->
+  </div>
+
+  <div class="flex space-x-4 mt-6">
+    <button onclick="startGame()" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded shadow-md">
+      Restart Game 🔄
+    </button>
+    <!--<button onclick="revealCoins()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">
+      Show All Coins 👀
+    </button>-->
+  </div>
+
+  <script>
+    const gridSize = 20;
+    const totalCoins = 14;
+    let coins = [];
+    let score = 0;
+    let streak = 0;
+
+    function startGame() {
+      const grid = document.getElementById('grid');
+      const scoreDisplay = document.getElementById('score');
+      const streakDisplay = document.getElementById('streak');
+
+      grid.innerHTML = '';
+      score = 0;
+      streak = 0;
+      scoreDisplay.textContent = 'Score: 0';
+      streakDisplay.textContent = 'Streak: 0';
+      coins = [];
+
+      while (coins.length < totalCoins) {
+        const rand = Math.floor(Math.random() * gridSize);
+        if (!coins.includes(rand)) coins.push(rand);
+      }
+
+      for (let i = 0; i < gridSize; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'w-16 h-16 bg-yellow-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-yellow-300 transition-all shadow';
+        tile.dataset.index = i;
+        tile.onclick = () => checkTile(tile);
+        grid.appendChild(tile);
+      
+      }
+
+    }
+
+   function checkTile(tile) {
+  const index = parseInt(tile.dataset.index);
+  if (tile.classList.contains('clicked')) return;
+
+  tile.classList.add('clicked');
+
+  if (coins.includes(index)) {
+    tile.innerHTML = '<img src="https://png.pngtree.com/png-clipart/20221026/original/pngtree-gold-coin-png-image_8724558.png" alt="coin" class="w-8 h-8">';
+    tile.classList.add('bg-yellow-400');
+    streak++;
+    score += streak;
+    updateScore();
+
+    // Reset grid but keep score and streak
+    setTimeout(() => {
+      refreshGrid(); // create new coins and grid
+    }, 800);
+
+  } else {
+    tile.innerHTML = '❌';
+    tile.classList.add('bg-red-300');
+    streak = 0;
+    updateScore();
+  }
+}
+function refreshGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  coins = [];
+
+  while (coins.length < totalCoins) {
+    const rand = Math.floor(Math.random() * gridSize);
+    if (!coins.includes(rand)) coins.push(rand);
+  }
+
+  for (let i = 0; i < gridSize; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'w-16 h-16 bg-yellow-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-yellow-300 transition-all shadow';
+    tile.dataset.index = i;
+    tile.onclick = () => checkTile(tile);
+    grid.appendChild(tile);
+  }
+}
+
+    function updateScore() {
+     document.getElementById('score').textContent = `Score: ${score}`;
+      document.getElementById('streak').textContent = `Streak: ${streak}`;
+    }
+
+    function revealCoins() {
+      const tiles = document.querySelectorAll('#grid > div');
+      coins.forEach(index => {
+        const tile = tiles[index];
+        if (!tile.classList.contains('clicked')) {
+          tile.innerHTML = '<img src="https://png.pngtree.com/png-clipart/20221026/original/pngtree-gold-coin-png-image_8724558.png">';
+          tile.classList.add('bg-green-200');
+        }
+      });
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
